@@ -1,15 +1,8 @@
-FROM golang:1.23.4 as Build 
+FROM python:3.8.5-alpine3.11
 
-WORKDIR  /app
-COPY go.mod ./
-RUN go mod download 
-RUN mkdir test 
+COPY . /usr/src/app
+WORKDIR /usr/src/app
 
-COPY . . 
+RUN pip install -r requirements.txt
 
-RUN CGO_ENABLED=0 GOOD=linux go build -o /api ./CMD/api 
-
-
-EXPOSE  80
-
-CMD ["/api"]
+ENTRYPOINT python appp.py
